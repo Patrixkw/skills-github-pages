@@ -1,225 +1,331 @@
-/* Basic Reset */
+/* Basic Reset & Global Styles */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* Import Inter font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    line-height: 1.6;
-    color: #333;
-    background-color: #f8f9fa;
-    padding: 20px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.7;
+    color: #dde1e3;
+    /* Animated Gradient Background */
+    background: linear-gradient(270deg, #0d1117, #161b22, #0d1117);
+    background-size: 600% 600%;
+    animation: GradientAnimation 16s ease infinite;
+    min-height: 100vh; /* Ensure gradient covers full height */
 }
 
-header, section {
-    margin-bottom: 30px;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+/* Keyframes for the gradient animation */
+@keyframes GradientAnimation {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+
+/* Wrapper for main content */
+.main-content-wrapper {
+    max-width: 1200px; /* Adjust max-width as needed */
+    margin: 40px auto; /* Adds top/bottom margin and centers horizontally */
+    padding: 0 20px; /* Add horizontal padding for smaller screens */
+}
+
+/* Mouse hover effect on body - subtle change to animation */
+body:has(.main-content-wrapper:hover) {
+    animation: GradientAnimation 10s ease infinite; /* Slightly faster animation on hover */
+}
+
+/* Container and Sections */
+header, section, #capabilities, #experience {
+    margin-bottom: 35px;
+    padding: 30px; /* Increased padding */
+    background-color: rgba(38, 38, 38, 0.85); /* Semi-transparent dark background */
+    backdrop-filter: blur(10px); /* Frosted glass effect */
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 12px; /* Slightly more rounded */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    border: 1px solid #384048; /* Adjusted border color */
 }
 
 header h1 {
-    margin-bottom: 5px;
-    color: #007bff;
+    margin-bottom: 8px;
+    color: #6cb6ff; /* Adjusted blue */
+    font-weight: 700;
 }
 
 header p {
-    color: #6c757d;
-    margin-bottom: 5px;
+    color: #b0b8c0;
+    margin-bottom: 6px;
 }
 
 header a {
-    color: #007bff;
+    color: #6cb6ff;
     text-decoration: none;
+    transition: color 0.3s ease;
 }
 
 header a:hover {
+    color: #8ec4ff;
     text-decoration: underline;
 }
 
 h2 {
-    color: #343a40;
-    margin-bottom: 15px;
-    border-bottom: 2px solid #007bff;
-    padding-bottom: 5px;
+    color: #e6edf3; /* Brighter title color */
+    margin-bottom: 20px;
+    border-bottom: 2px solid #6cb6ff;
+    padding-bottom: 10px;
+    font-weight: 600;
 }
 
 ul {
     list-style-position: inside;
-    padding-left: 0; /* Remove default padding */
+    padding-left: 0;
 }
 
 li {
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
-/* Layout for Capabilities and Timeline */
+strong {
+    color: #e6edf3;
+    font-weight: 600;
+}
+
+/* Layout */
 .container {
     display: flex;
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    gap: 30px;
+    flex-wrap: wrap;
+    gap: 35px;
 }
 
 #capabilities {
-    flex: 1; /* Take 1 part of the space */
-    min-width: 250px; /* Minimum width before wrapping */
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    flex: 1;
+    min-width: 280px;
+    /* background-color inherited */
 }
 
 #experience {
-    flex: 3; /* Take 3 parts of the space */
-    min-width: 400px; /* Minimum width */
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    flex: 3;
+    min-width: 450px;
+    /* background-color inherited */
 }
 
-/* Capabilities Section */
+/* Capabilities Section - Enhanced Tags */
 .capability-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .capability-group h3 {
-    margin-bottom: 10px;
-    color: #495057;
-    font-size: 1.1em;
+    margin-bottom: 12px;
+    color: #9da5b0; /* Adjusted grey */
+    font-size: 1.05em;
+    font-weight: 600;
 }
 
 .cap-tag {
     display: inline-block;
-    background-color: #e9ecef;
-    color: #495057;
-    padding: 5px 10px;
-    margin: 3px;
-    border-radius: 15px;
+    background-color: #3a3f47; /* Adjusted tag background */
+    color: #e6edf3;
+    padding: 7px 14px;
+    margin: 4px;
+    border-radius: 20px;
     font-size: 0.9em;
     cursor: pointer;
-    border: 1px solid #ced4da;
-    transition: background-color 0.3s, color 0.3s;
+    border: 1px solid #4a5058;
+    transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.3s;
 }
 
-.cap-tag:hover, .cap-tag.active {
-    background-color: #007bff;
-    color: #fff;
-    border-color: #007bff;
+.cap-tag:hover {
+    background-color: #6cb6ff;
+    color: #0d1117; /* Dark text on hover */
+    border-color: #6cb6ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(108, 182, 255, 0.3);
+}
+
+.cap-tag.active {
+    background-color: #6cb6ff;
+    color: #0d1117;
+    border-color: #6cb6ff;
+    font-weight: 600;
+    box-shadow: 0 2px 5px rgba(108, 182, 255, 0.2);
 }
 
 #reset-filter {
     display: block;
     width: 100%;
-    padding: 10px;
-    margin-top: 15px;
-    background-color: #6c757d;
-    color: white;
+    padding: 12px;
+    margin-top: 20px;
+    background-color: #4a5058;
+    color: #e6edf3;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s;
+    font-weight: 600;
 }
 
 #reset-filter:hover {
-    background-color: #5a6268;
+    background-color: #5c6470;
 }
 
-/* Timeline Section */
+/* Timeline Section - Enhanced Look */
 .timeline {
     position: relative;
-    padding-left: 30px; /* Space for the line and dots */
+    padding-left: 35px;
 }
 
 .timeline::before {
     content: '';
     position: absolute;
-    left: 10px;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background-color: #dee2e6;
+    left: 12px;
+    top: 5px;
+    bottom: 5px;
+    width: 3px;
+    background-color: #4a5058;
+    border-radius: 2px;
 }
 
 .timeline-item {
-    margin-bottom: 30px;
+    margin-bottom: 35px;
     position: relative;
-    transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
     opacity: 1;
+    transform: translateX(0);
 }
 
 .timeline-item.filtered-out {
-    opacity: 0.2; /* Make non-matching items less visible */
+    opacity: 0.25;
+    pointer-events: none; /* Prevent interaction with faded items */
 }
+
 .timeline-item.highlighted {
-    /* Optional: Add a stronger highlight if needed */
-    /* background-color: #e7f3ff; */
-    /* border-left: 3px solid #007bff; */
-    /* padding-left: 10px; */
+     /* Highlight is mainly handled by opacity now, but keep subtle background */
+     background-color: rgba(108, 182, 255, 0.08);
+     border-left: 3px solid #6cb6ff;
+     padding-left: 15px;
+     margin-left: -18px; /* Adjust margin to compensate for padding */
+     border-radius: 5px;
 }
 
 .timeline-dot {
     position: absolute;
-    left: -5px; /* Adjust to center on the line */
-    top: 5px;
-    width: 12px;
-    height: 12px;
-    background-color: #007bff; /* Blue for work/default */
+    left: -8px;
+    top: 8px;
+    width: 18px;
+    height: 18px;
+    background-color: #6cb6ff; /* Primary blue */
     border-radius: 50%;
-    border: 2px solid #fff;
+    border: 3px solid #262626;
+    z-index: 1;
+    transition: transform 0.3s ease;
+}
+
+.timeline-item:hover .timeline-dot {
+    transform: scale(1.2); /* Enlarge dot on hover */
 }
 
 .timeline-dot.project-dot {
-    background-color: #28a745; /* Green for projects */
+    background-color: #46c85a; /* Brighter green */
 }
 
 .timeline-content {
-    background-color: #f8f9fa; /* Light background for content */
-    padding: 15px;
-    border-radius: 6px;
-    border: 1px solid #e9ecef;
+    background-color: rgba(33, 33, 33, 0.9); /* Slightly more transparency */
+    backdrop-filter: blur(5px); /* Less blur for content */
+    -webkit-backdrop-filter: blur(5px);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #384048;
+    transition: box-shadow 0.3s ease;
+}
+
+.timeline-item:not(.filtered-out) .timeline-content:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
 .timeline-content h3 {
-    margin-bottom: 5px;
-    font-size: 1.2em;
-    color: #495057;
+    margin-bottom: 6px;
+    font-size: 1.25em;
+    color: #e6edf3;
+    font-weight: 600;
 }
 
 .timeline-content .date {
     display: block;
     font-size: 0.9em;
-    color: #6c757d;
-    margin-bottom: 10px;
+    color: #9da5b0;
+    margin-bottom: 12px;
 }
 
-.timeline-content p,
+.timeline-content p {
+    margin-bottom: 10px;
+    color: #b0b8c0;
+}
+
 .timeline-content ul {
     margin-bottom: 0;
+    padding-left: 20px;
+    list-style-type: disc;
 }
-.timeline-content ul {
-    padding-left: 20px; /* Indent bullet points */
-    list-style-type: disc; /* Use standard bullets */
+.timeline-content ul li {
+     color: #b0b8c0;
 }
 
-
+/* Footer */
 footer {
     text-align: center;
-    margin-top: 40px;
-    color: #6c757d;
+    margin: 60px auto 40px auto; /* Center footer as well */
+    max-width: 1200px;
+    color: #9da5b0;
     font-size: 0.9em;
+    padding-top: 20px;
+    border-top: 1px solid #384048;
 }
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
+    body {
+        padding: 0;
+    }
+    .main-content-wrapper {
+        margin: 20px auto; /* Adjust margin for mobile */
+        padding: 0 15px;
+    }
+    header, section, #capabilities, #experience {
+        padding: 20px;
+    }
     .container {
         flex-direction: column;
+        gap: 25px;
     }
     #capabilities, #experience {
-        flex: none; /* Remove flex sizing */
-        width: 100%; /* Take full width */
+        flex: none;
+        width: 100%;
+        min-width: unset;
+    }
+    header h1 {
+        font-size: 1.8em;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    .timeline {
+        padding-left: 25px;
+    }
+    .timeline::before {
+        left: 8px;
+    }
+    .timeline-dot {
+        left: -11px; /* Adjust dot position for mobile */
+        width: 16px;
+        height: 16px;
+        top: 6px;
+    }
+    .timeline-item.highlighted {
+         padding-left: 10px;
+         margin-left: -13px;
     }
 } 

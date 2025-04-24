@@ -16,16 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
         tag.addEventListener('click', () => {
             const selectedCapability = tag.dataset.capability;
 
-            // Toggle active state for the clicked tag
             if (activeCapability === selectedCapability) {
-                // Deactivate if clicking the same tag again
                 tag.classList.remove('active');
                 activeCapability = null;
-                filterTimeline(null); // Show all
+                filterTimeline(null); 
             } else {
-                // Deactivate previously active tag
                 capabilityTags.forEach(t => t.classList.remove('active'));
-                // Activate the clicked tag
                 tag.classList.add('active');
                 activeCapability = selectedCapability;
                 filterTimeline(activeCapability);
@@ -38,37 +34,48 @@ document.addEventListener('DOMContentLoaded', () => {
         resetButton.addEventListener('click', () => {
             capabilityTags.forEach(tag => tag.classList.remove('active'));
             activeCapability = null;
-            filterTimeline(null); // Show all items
+            filterTimeline(null); 
+            // Scroll back to the top of the experience section after reset
+            document.getElementById('experience').scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
     }
 
     // --- Timeline Filtering Function ---
     function filterTimeline(capability) {
+        let firstMatchFound = false; // Flag to track if the first matching project has been found
+        let firstMatchingElement = null;
+
         timelineItems.forEach(item => {
-            // Always show non-project items (like company headers)
+            // Always show non-project items
             if (!item.classList.contains('project-item')) {
-                 item.classList.remove('filtered-out');
-                 item.classList.remove('highlighted'); // Ensure no highlight
-                 return; // Skip filtering for non-project items
+                 item.classList.remove('filtered-out', 'highlighted');
+                 return; 
             }
 
-            // If no capability filter, show all project items
-            if (!capability) {
-                item.classList.remove('filtered-out');
-                item.classList.remove('highlighted');
-                return;
-            }
-
-            // Check if the item has the selected capability
             const itemCapabilities = item.dataset.capabilities ? item.dataset.capabilities.split(' ') : [];
-            if (itemCapabilities.includes(capability)) {
+            const isMatch = !capability || itemCapabilities.includes(capability);
+
+            if (isMatch) {
                 item.classList.remove('filtered-out');
-                item.classList.add('highlighted'); // Highlight matching items
+                item.classList.add('highlighted'); 
+                // Capture the first matching project item
+                if (!firstMatchFound) {
+                    firstMatchingElement = item;
+                    firstMatchFound = true;
+                }
             } else {
-                item.classList.add('filtered-out'); // Fade out non-matching items
-                 item.classList.remove('highlighted');
+                item.classList.add('filtered-out'); 
+                item.classList.remove('highlighted');
             }
         });
+
+        // Scroll the first matching project item into view if a filter is active
+        if (capability && firstMatchingElement) {
+             // Use timeout to ensure rendering changes are applied before scrolling
+             setTimeout(() => {
+                 firstMatchingElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+             }, 100); // Small delay might be needed
+        }
     }
 
     // --- Optional: Add more interactivity here ---
