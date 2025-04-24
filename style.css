@@ -37,9 +37,9 @@ body {
 }
 
 .main-content-wrapper {
-    max-width: 1280px; /* Slightly wider */
-    margin: 50px auto; /* Increased top/bottom margin */
-    padding: 0 25px;
+    max-width: 1360px; /* Wider max-width */
+    margin: 50px auto;
+    padding: 0 30px; /* Increased padding */
 }
 
 /* Subtle hover effect on body */
@@ -51,7 +51,7 @@ body:has(.main-content-wrapper:hover) {
 header, section, #capabilities, #experience {
     margin-bottom: 40px;
     padding: 35px;
-    background-color: rgba(22, 27, 34, 0.88); /* Darker, slightly more opaque */
+    background-color: rgba(22, 27, 34, 0.9); /* Slightly more opaque */
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-radius: 15px;
@@ -59,15 +59,31 @@ header, section, #capabilities, #experience {
     border: 1px solid #30363d;
 }
 
-/* --- Enhanced Header --- */
+/* --- Header --- */
 header h1 {
     margin-bottom: 10px;
-    color: #79c0ff; /* Slightly lighter blue */
+    color: #79c0ff;
     font-weight: 700;
     text-shadow: 0 0 5px rgba(121, 192, 255, 0.3);
 }
 
-/* --- Enhanced Section Titles --- */
+header p {
+    color: #b0b8c0;
+    margin-bottom: 6px;
+}
+
+header a {
+    color: #79c0ff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+header a:hover {
+    color: #8ec4ff;
+    text-decoration: underline;
+}
+
+/* --- Section Titles --- */
 h2 {
     color: #c9d1d9;
     margin-bottom: 25px;
@@ -76,63 +92,195 @@ h2 {
     font-weight: 600;
 }
 
-/* --- Enhanced Capabilities Tags --- */
-.cap-tag {
-    /* Previous styles retained, adding enhancements */
-    transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.3s;
-    position: relative; /* Needed for pseudo-element */
-    overflow: hidden; /* Hide overflowing pseudo-element */
+/* --- Layout - Stricter Left/Right --- */
+.container {
+    display: flex;
+    flex-wrap: nowrap; /* Prevent wrapping on wider screens */
+    gap: 40px; /* Increased gap */
 }
 
-.cap-tag::before { /* Shiny hover effect */
+#capabilities {
+    flex: 1 0 320px; /* Flex-grow, flex-shrink, flex-basis */
+    max-width: 400px; /* Max width for capabilities */
+    min-width: 300px; /* Min width before things get tight */
+    /* background-color inherited */
+}
+
+#experience {
+    flex: 3 1 60%; /* Grow more, shrink, base size */
+    min-width: 500px;
+    /* background-color inherited */
+}
+
+/* --- Capabilities Section Styling --- */
+.capability-group {
+    margin-bottom: 25px;
+}
+
+.capability-group h3 {
+    margin-bottom: 15px;
+    color: #9da5b0;
+    font-size: 1.1em;
+    font-weight: 600;
+}
+
+.cap-tag {
+    display: inline-block;
+    padding: 8px 16px;
+    margin: 5px;
+    border-radius: 8px; /* Rounded rectangle */
+    font-size: 0.9em;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent; /* Transparent border initially */
+    transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+    position: relative;
+    overflow: visible; /* Allow box-shadow */
+    color: #c9d1d9;
+    /* Default dark gradient */
+    background: linear-gradient(145deg, #2e333a, #21262c);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* --- Colored Halo Effect --- */
+.cap-tag::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: -100%;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.4s ease;
+    top: -2px; left: -2px; right: -2px; bottom: -2px;
+    border-radius: 9px; /* Slightly larger radius */
+    background: linear-gradient(60deg, #ff007f, #007fff, #ff007f); /* Red-Blue gradient */
+    background-size: 300% 300%;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease, background-position 0.5s ease;
+    animation: HaloSpin 5s linear infinite paused; /* Paused initially */
 }
 
-.cap-tag:hover::before {
-    left: 150%;
+@keyframes HaloSpin {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+.cap-tag:hover::after {
+    opacity: 0.5; /* Fade in halo on hover */
+    animation-play-state: running; /* Start animation */
 }
 
 .cap-tag:hover {
-    background-color: #79c0ff;
-    color: #0d1117;
-    border-color: #79c0ff;
-    transform: translateY(-3px) scale(1.03); /* More pronounced lift */
-    box-shadow: 0 6px 12px rgba(121, 192, 255, 0.4);
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    border-color: rgba(121, 192, 255, 0.5); /* Subtle border highlight */
 }
 
-.cap-tag.active {
-    background-color: #79c0ff;
+/* --- Active/Selected Tag Style --- */
+/* Increase specificity or define later to ensure override */
+.cap-tag.active,
+.cap-tag.highlighted-by-project { /* Apply same visual style for both direct click and project click highlight */
+    background: linear-gradient(145deg, #6cb6ff, #4a9cff);
     color: #0d1117;
-    border-color: #79c0ff;
     font-weight: 600;
-    box-shadow: 0 3px 8px rgba(121, 192, 255, 0.3);
+    box-shadow: 0 4px 10px rgba(121, 192, 255, 0.4);
+    border-color: #79c0ff;
+    transform: translateY(-1px) scale(1.01); /* Less pronounced transform when active vs hover */
 }
 
-/* Style for tags highlighted by project click */
-.cap-tag.highlighted-by-project {
-    background-color: #46c85a; /* Use project green for distinction */
-    color: #0d1117;
-    border-color: #46c85a;
-    box-shadow: 0 3px 8px rgba(70, 200, 90, 0.3);
+.cap-tag.active::after,
+.cap-tag.highlighted-by-project::after {
+     opacity: 0.7;
+     animation-play-state: running;
 }
 
-/* --- Enhanced Timeline --- */
+/* Ensure hover doesn't completely override active state look */
+.cap-tag.active:hover,
+.cap-tag.highlighted-by-project:hover {
+    /* Keep active background/color, maybe slightly change shadow/transform */
+    box-shadow: 0 5px 11px rgba(121, 192, 255, 0.45);
+    transform: translateY(-2px) scale(1.02);
+}
+
+/* --- Capability Group Colors --- */
+/* Planning (Group 1) - Subtle Teal/Blue Dark */
+#capabilities .capability-group:nth-child(1) .cap-tag {
+    background: linear-gradient(145deg, #1f3a40, #14252a);
+}
+#capabilities .capability-group:nth-child(1) .cap-tag::after {
+    background: linear-gradient(60deg, #ff5733, #33c4ff, #ff5733); /* Orange-Cyan */
+}
+
+/* Operations (Group 2) - Subtle Purple Dark */
+#capabilities .capability-group:nth-child(2) .cap-tag {
+    background: linear-gradient(145deg, #3a2a40, #251a2a);
+}
+#capabilities .capability-group:nth-child(2) .cap-tag::after {
+    background: linear-gradient(60deg, #a333ff, #ffdd33, #a333ff); /* Purple-Yellow */
+}
+
+/* Execution (Group 3) - Subtle Green Dark */
+#capabilities .capability-group:nth-child(3) .cap-tag {
+    background: linear-gradient(145deg, #2a402a, #1a2a1a);
+}
+#capabilities .capability-group:nth-child(3) .cap-tag::after {
+     background: linear-gradient(60deg, #33ff57, #c94730, #cdb646); /* Green-Pink */
+}
+#capabilities .capability-group:nth-child(3) .cap-tag::selection {
+    background: linear-gradient(60deg, #33ff57, #c94730, #cdb646);
+}   
+
+
+
+/* Domain (Group 4) - Subtle Grey/Brown Dark */
+#capabilities .capability-group:nth-child(4) .cap-tag {
+    background: linear-gradient(145deg, #403a2a, #2a251a);
+}
+#capabilities .capability-group:nth-child(4) .cap-tag::after {
+    background: linear-gradient(60deg, #ff8c33, #54abf3, #ff8c33); /* Orange-Blue */
+}
+
+/* --- Enhanced Reset Button --- */
+#reset-filter {
+    display: inline-block; /* Change display */
+    width: auto; /* Auto width based on content */
+    padding: 8px 18px; /* Adjust padding */
+    margin-top: 25px;
+    background: linear-gradient(145deg, #3a3f47, #2b3036); /* Dark gradient */
+    color: #b0b8c0;
+    border: 1px solid #4a5058;
+    border-radius: 20px; /* Match tag roundness */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+#reset-filter:hover {
+    background: linear-gradient(145deg, #4a5058, #3a3f47);
+    color: #e6edf3;
+    border-color: #5c6470;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    transform: translateY(-1px);
+}
+
+#reset-filter:active {
+    transform: translateY(0px);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* --- Timeline Section --- */
 .timeline {
     position: relative;
     padding-left: 40px;
 }
 
 .timeline::before {
+    content: '';
+    position: absolute;
     left: 15px;
+    top: 5px;
+    bottom: 5px;
     width: 4px;
     background-color: #30363d;
+    border-radius: 2px;
 }
 
 .timeline-item {
@@ -143,35 +291,42 @@ h2 {
     transform-origin: left center;
 }
 
-/* Style for items filtered out (now hidden) */
+/* Filtered out items are hidden via JS reordering now, style might not be needed */
+/* Keep subtle opacity for visual cue during transition if desired */
 .timeline-item.filtered-out {
-    opacity: 0;
-    height: 0;
-    margin-bottom: 0; /* Collapse margin */
-    overflow: hidden; /* Hide content */
+    opacity: 0.5; /* Keep subtle opacity for filtered items */
     pointer-events: none;
-    transform: scaleY(0);
-    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out, margin-bottom 0.4s ease-in-out, height 0.4s ease-in-out;
 }
 
-/* Highlight for items matching capability filter */
 .timeline-item.highlighted {
-     opacity: 1;
-     /* Removed background/border highlight, relying on filtering */
+    opacity: 1;
 }
 
-/* Style for currently selected project */
+/* Selected Project Style (Blue Glow) */
 .timeline-item.selected-project .timeline-content {
-    box-shadow: 0 0 15px rgba(70, 200, 90, 0.5); /* Green glow */
-    border-color: #46c85a;
+    box-shadow: 0 0 15px rgba(121, 192, 255, 0.4); /* Blue glow */
+    border-color: #79c0ff; /* Blue border */
+}
+
+.timeline-item.selected-project .timeline-dot { /* Applies to both work/project if selected, override needed */
+    transform: scale(1.3);
+    background-color: #79c0ff; /* Selected dot is blue */
+}
+/* Ensure selected project dot overrides work dot color */
+.timeline-item.selected-project.work-item .timeline-dot {
+     background-color: #79c0ff;
 }
 
 .timeline-dot {
+    position: absolute;
     left: -11px;
     top: 10px;
     width: 20px;
     height: 20px;
-    border: 4px solid #22272e;
+    background-color: #6cb6ff; /* Default blue dot */
+    border-radius: 50%;
+    border: 4px solid #161b22; /* Darker border matching body bg */
+    z-index: 1;
     transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
@@ -179,29 +334,56 @@ h2 {
     transform: scale(1.3);
 }
 
-.timeline-item.selected-project .timeline-dot {
-    transform: scale(1.3);
-    background-color: #46c85a; /* Match selected border */
+/* Project Item Dot */
+.timeline-dot.project-dot {
+    background-color: #46c85a; /* Green for projects */
 }
 
-.timeline-dot.project-dot {
+/* Work Item Style - Remove background and border */
+.timeline-item.work-item .timeline-dot {
+    background-color: #8b949e; /* Grey for work experience */
+}
+
+.timeline-item.work-item .timeline-content {
+    background-color: transparent; /* Remove background */
+    border: none; /* Remove border */
+    padding-left: 5px; /* Adjust padding slightly */
+    padding-right: 5px;
+    box-shadow: none; /* Remove shadow for work items */
+    backdrop-filter: none; /* Remove blur */
+    -webkit-backdrop-filter: none;
+}
+
+/* Adjust heading style for work items if needed */
+.timeline-item.work-item .timeline-content h3 {
+     color: #c9d1d9; /* Ensure visibility */
+}
+
+.timeline-item.work-item:hover .timeline-dot {
+    background-color: #a0a8b1;
+}
+
+/* --- Unselected project dot remains green --- */
+.timeline-item.project-item:not(.selected-project) .timeline-dot {
     background-color: #46c85a;
 }
 
 .timeline-content {
-    background-color: rgba(27, 31, 36, 0.9); /* GitHub dark content bg */
+    /* Keep styles for project items */
+    background-color: rgba(27, 31, 36, 0.92);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     padding: 25px;
     border-radius: 10px;
     border: 1px solid #30363d;
     transition: box-shadow 0.4s ease, border-color 0.4s ease;
-    cursor: pointer; /* Indicate projects are clickable */
+    cursor: pointer;
 }
 
-.timeline-item:not(.filtered-out) .timeline-content:hover {
+/* Apply content hover only to project items */
+.timeline-item.project-item:not(.filtered-out) .timeline-content:hover {
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
-    border-color: #58a6ff; /* Blue border on hover */
+    border-color: #58a6ff;
 }
 
 /* --- Other elements --- */
@@ -211,19 +393,44 @@ strong {
 
 /* Footer */
 footer {
-    max-width: 1280px;
+    max-width: 1360px;
     margin: 70px auto 40px auto;
     color: #8b949e;
     border-top: 1px solid #30363d;
+    text-align: center;
+    padding-top: 20px;
+    font-size: 0.9em;
 }
 
 /* Responsive */
+@media (max-width: 992px) { /* Adjust breakpoint for wrap */
+    .container {
+        flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    }
+    #capabilities, #experience {
+        flex: 1 1 100%; /* Take full width when wrapped */
+        max-width: none;
+    }
+}
+
 @media (max-width: 768px) {
     body { padding: 0; }
     .main-content-wrapper { margin: 20px auto; padding: 0 15px; }
     header, section, #capabilities, #experience { padding: 25px; border-radius: 10px; }
+    h2 { font-size: 1.3em; }
     .timeline { padding-left: 30px; }
     .timeline::before { left: 10px; }
     .timeline-dot { left: -10px; width: 18px; height: 18px; top: 8px; border-width: 3px; }
-    .timeline-item.highlighted { margin-left: -13px; padding-left: 10px; }
+    .timeline-item.highlighted {
+         /* Resetting potential left margin adjustments from wider screens */
+         margin-left: 0;
+         padding-left: 0; /* Highlighting doesn't need extra padding now */
+         border-left: none; /* Rely on selection style */
+         background-color: transparent; /* Reset background */
+    }
+     .timeline-item.selected-project .timeline-content {
+         box-shadow: 0 0 10px rgba(121, 192, 255, 0.4); /* Slightly smaller glow */
+         border: 1px solid #79c0ff;
+     }
+
 } 

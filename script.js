@@ -15,47 +15,58 @@ document.addEventListener('DOMContentLoaded', () => {
     let selectedProject = null;
 
     // --- Reset All Highlights and Filters ---
-    function resetAllStates() {
-        // Reset capability tags
-        capabilityTags.forEach(tag => tag.classList.remove('active', 'highlighted-by-project'));
-        activeCapability = null;
-
-        // Reset project selections
-        projectItems.forEach(item => item.classList.remove('selected-project'));
-        selectedProject = null;
-
-        // Reset timeline visibility and order
-        filterTimeline(null);
+    function resetAllStates(options = { resetCapability: true, resetProject: true, reorder: true }) {
+        if (options.resetCapability) {
+            capabilityTags.forEach(tag => tag.classList.remove('active', 'highlighted-by-project'));
+            activeCapability = null;
+        }
+        if (options.resetProject) {
+            projectItems.forEach(item => item.classList.remove('selected-project'));
+            selectedProject = null;
+        }
+        if (options.reorder) {
+            filterTimeline(activeCapability); // Re-filter based on potentially remaining activeCapability
+        }
     }
 
     // --- Capability Tag Click Logic ---
     capabilityTags.forEach(tag => {
         tag.addEventListener('click', () => {
-            const selectedCapability = tag.dataset.capability;
-            resetAllStates(); // Reset everything before applying new filter
+            const clickedCapability = tag.dataset.capability;
 
-            tag.classList.add('active');
-            activeCapability = selectedCapability;
-            filterTimeline(activeCapability);
+            if (tag.classList.contains('active')) {
+                // Clicked the already active tag: reset everything
+                resetAllStates();
+            } else {
+                // Clicked a new or inactive tag: reset previous, set new active
+                resetAllStates({ resetCapability: true, resetProject: true, reorder: false }); // Don't reorder yet
+                tag.classList.add('active');
+                activeCapability = clickedCapability;
+                filterTimeline(activeCapability); // Now filter and reorder
+            }
         });
     });
 
     // --- Project Item Click Logic ---
     projectItems.forEach(item => {
         item.addEventListener('click', () => {
-            resetAllStates(); // Reset states first
+            if (item.classList.contains('selected-project')) {
+                // Clicked the already selected project: reset everything
+                resetAllStates();
+            } else {
+                // Clicked a new project: reset previous, set new selected
+                resetAllStates({ resetCapability: true, resetProject: true, reorder: false }); // Keep current timeline order
 
-            // Highlight clicked project
-            item.classList.add('selected-project');
-            selectedProject = item;
+                item.classList.add('selected-project');
+                selectedProject = item;
 
-            // Highlight associated capability tags
-            const itemCapabilities = item.dataset.capabilities ? item.dataset.capabilities.split(' ') : [];
-            capabilityTags.forEach(tag => {
-                if (itemCapabilities.includes(tag.dataset.capability)) {
-                    tag.classList.add('highlighted-by-project');
-                }
-            });
+                const itemCapabilities = item.dataset.capabilities ? item.dataset.capabilities.split(' ') : [];
+                capabilityTags.forEach(tag => {
+                    if (itemCapabilities.includes(tag.dataset.capability)) {
+                        tag.classList.add('highlighted-by-project');
+                    }
+                });
+            }
         });
     });
 
@@ -70,43 +81,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Timeline Filtering and Reordering Function ---
     function filterTimeline(capability) {
-        const fragment = document.createDocumentFragment(); // Use fragment for efficiency
+        const fragment = document.createDocumentFragment();
         const matchedItems = [];
-        const nonMatchedItems = [];
+        const nonMatchedItems = []; // Keep track of non-matched for potential ordering
 
-        // Separate items based on filter (or lack thereof)
         allTimelineItems.forEach(item => {
+            // Reset classes before evaluation
+            item.classList.remove('filtered-out', 'highlighted');
+
             if (!item.classList.contains('project-item')) {
-                // Always include non-project items (like company headers) at their original relative position
-                // For simplicity, we'll append them first if no filter, or handle complex ordering if needed.
-                // Current simple approach: just show them always.
-                item.classList.remove('filtered-out', 'highlighted');
-                matchedItems.push(item); // Add non-project items to the top when filtering for simplicity
+                // Always keep work items visible
+                matchedItems.push(item);
                 return;
             }
 
             const itemCapabilities = item.dataset.capabilities ? item.dataset.capabilities.split(' ') : [];
             const isMatch = !capability || itemCapabilities.includes(capability);
 
-            item.classList.remove('filtered-out', 'highlighted'); // Reset classes first
-
             if (isMatch) {
                 item.classList.add('highlighted');
                 matchedItems.push(item);
             } else {
                 item.classList.add('filtered-out');
-                nonMatchedItems.push(item);
+                nonMatchedItems.push(item); // Add to non-matched list
             }
         });
 
-        // Clear the timeline container
-        // timelineContainer.innerHTML = ''; // This can be disruptive, appending is better
+        // Re-append in order: Matched first, then non-matched
+        // Detach all items first to avoid issues with re-appending existing children
+        while (timelineContainer.firstChild) {
+            timelineContainer.removeChild(timelineContainer.firstChild);
+        }
 
-        // Append matched items first, then non-matched items
         matchedItems.forEach(item => fragment.appendChild(item));
-        nonMatchedItems.forEach(item => fragment.appendChild(item));
+        nonMatchedItems.forEach(item => fragment.appendChild(item)); // Append filtered ones at the end
 
-        // Append the reordered items back to the container
         timelineContainer.appendChild(fragment);
     }
 
