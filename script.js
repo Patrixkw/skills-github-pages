@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     const capabilityTags = document.querySelectorAll('.cap-tag');
-    const timelineItems = document.querySelectorAll('.timeline-item');
+    const timelineContainer = document.querySelector('.timeline'); // Get the timeline container
+    const allTimelineItems = Array.from(timelineContainer.querySelectorAll('.timeline-item')); // Get all items once
+    const projectItems = timelineContainer.querySelectorAll('.project-item');
     const resetButton = document.getElementById('reset-filter');
     const currentYearSpan = document.getElementById('current-year');
 
@@ -10,73 +12,106 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let activeCapability = null;
+    let selectedProject = null;
 
-    // --- Capability Filtering Logic ---
+    // --- Reset All Highlights and Filters ---
+    function resetAllStates() {
+        // Reset capability tags
+        capabilityTags.forEach(tag => tag.classList.remove('active', 'highlighted-by-project'));
+        activeCapability = null;
+
+        // Reset project selections
+        projectItems.forEach(item => item.classList.remove('selected-project'));
+        selectedProject = null;
+
+        // Reset timeline visibility and order
+        filterTimeline(null);
+    }
+
+    // --- Capability Tag Click Logic ---
     capabilityTags.forEach(tag => {
         tag.addEventListener('click', () => {
             const selectedCapability = tag.dataset.capability;
+            resetAllStates(); // Reset everything before applying new filter
 
-            if (activeCapability === selectedCapability) {
-                tag.classList.remove('active');
-                activeCapability = null;
-                filterTimeline(null); 
-            } else {
-                capabilityTags.forEach(t => t.classList.remove('active'));
-                tag.classList.add('active');
-                activeCapability = selectedCapability;
-                filterTimeline(activeCapability);
-            }
+            tag.classList.add('active');
+            activeCapability = selectedCapability;
+            filterTimeline(activeCapability);
         });
     });
 
-    // --- Reset Filter Logic ---
+    // --- Project Item Click Logic ---
+    projectItems.forEach(item => {
+        item.addEventListener('click', () => {
+            resetAllStates(); // Reset states first
+
+            // Highlight clicked project
+            item.classList.add('selected-project');
+            selectedProject = item;
+
+            // Highlight associated capability tags
+            const itemCapabilities = item.dataset.capabilities ? item.dataset.capabilities.split(' ') : [];
+            capabilityTags.forEach(tag => {
+                if (itemCapabilities.includes(tag.dataset.capability)) {
+                    tag.classList.add('highlighted-by-project');
+                }
+            });
+        });
+    });
+
+    // --- Reset Button Logic ---
     if (resetButton) {
         resetButton.addEventListener('click', () => {
-            capabilityTags.forEach(tag => tag.classList.remove('active'));
-            activeCapability = null;
-            filterTimeline(null); 
-            // Scroll back to the top of the experience section after reset
-            document.getElementById('experience').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            resetAllStates();
+            // Optional: Scroll back to top after reset if needed
+            // document.getElementById('experience').scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
     }
 
-    // --- Timeline Filtering Function ---
+    // --- Timeline Filtering and Reordering Function ---
     function filterTimeline(capability) {
-        let firstMatchFound = false; // Flag to track if the first matching project has been found
-        let firstMatchingElement = null;
+        const fragment = document.createDocumentFragment(); // Use fragment for efficiency
+        const matchedItems = [];
+        const nonMatchedItems = [];
 
-        timelineItems.forEach(item => {
-            // Always show non-project items
+        // Separate items based on filter (or lack thereof)
+        allTimelineItems.forEach(item => {
             if (!item.classList.contains('project-item')) {
-                 item.classList.remove('filtered-out', 'highlighted');
-                 return; 
+                // Always include non-project items (like company headers) at their original relative position
+                // For simplicity, we'll append them first if no filter, or handle complex ordering if needed.
+                // Current simple approach: just show them always.
+                item.classList.remove('filtered-out', 'highlighted');
+                matchedItems.push(item); // Add non-project items to the top when filtering for simplicity
+                return;
             }
 
             const itemCapabilities = item.dataset.capabilities ? item.dataset.capabilities.split(' ') : [];
             const isMatch = !capability || itemCapabilities.includes(capability);
 
+            item.classList.remove('filtered-out', 'highlighted'); // Reset classes first
+
             if (isMatch) {
-                item.classList.remove('filtered-out');
-                item.classList.add('highlighted'); 
-                // Capture the first matching project item
-                if (!firstMatchFound) {
-                    firstMatchingElement = item;
-                    firstMatchFound = true;
-                }
+                item.classList.add('highlighted');
+                matchedItems.push(item);
             } else {
-                item.classList.add('filtered-out'); 
-                item.classList.remove('highlighted');
+                item.classList.add('filtered-out');
+                nonMatchedItems.push(item);
             }
         });
 
-        // Scroll the first matching project item into view if a filter is active
-        if (capability && firstMatchingElement) {
-             // Use timeout to ensure rendering changes are applied before scrolling
-             setTimeout(() => {
-                 firstMatchingElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-             }, 100); // Small delay might be needed
-        }
+        // Clear the timeline container
+        // timelineContainer.innerHTML = ''; // This can be disruptive, appending is better
+
+        // Append matched items first, then non-matched items
+        matchedItems.forEach(item => fragment.appendChild(item));
+        nonMatchedItems.forEach(item => fragment.appendChild(item));
+
+        // Append the reordered items back to the container
+        timelineContainer.appendChild(fragment);
     }
+
+    // Initial state setup (show all)
+    filterTimeline(null);
 
     // --- Optional: Add more interactivity here ---
     // e.g., Clicking a timeline item shows a modal with more details

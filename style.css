@@ -12,320 +12,218 @@ body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     line-height: 1.7;
     color: #dde1e3;
-    /* Animated Gradient Background */
-    background: linear-gradient(270deg, #0d1117, #161b22, #0d1117);
-    background-size: 600% 600%;
-    animation: GradientAnimation 16s ease infinite;
-    min-height: 100vh; /* Ensure gradient covers full height */
+
+    /* --- Background Options --- */
+    /* Option 1: Animated Gradient (Default) */
+    background: linear-gradient(270deg, #0d1117, #11161d, #0a0c10, #11161d);
+    background-size: 800% 800%; /* Larger size for smoother transition */
+    animation: GradientAnimation 20s ease infinite;
+
+    /* Option 2: Static Image (Uncomment and replace URL/path if you upload the image) */
+    /* background-image: url('./muhamad-rizal-firmansyah-HY6F0s_dwIY-unsplash.jpg'); */ /* Example using relative path */
+    /* background-size: cover; */
+    /* background-position: center; */
+    /* background-attachment: fixed; */ /* Makes the background stationary */
+    /* background-color: #0d1117; */ /* Fallback color */
+    /* --- End Background Options --- */
+
+    min-height: 100vh;
 }
 
-/* Keyframes for the gradient animation */
 @keyframes GradientAnimation {
     0%{background-position:0% 50%}
     50%{background-position:100% 50%}
     100%{background-position:0% 50%}
 }
 
-/* Wrapper for main content */
 .main-content-wrapper {
-    max-width: 1200px; /* Adjust max-width as needed */
-    margin: 40px auto; /* Adds top/bottom margin and centers horizontally */
-    padding: 0 20px; /* Add horizontal padding for smaller screens */
+    max-width: 1280px; /* Slightly wider */
+    margin: 50px auto; /* Increased top/bottom margin */
+    padding: 0 25px;
 }
 
-/* Mouse hover effect on body - subtle change to animation */
+/* Subtle hover effect on body */
 body:has(.main-content-wrapper:hover) {
-    animation: GradientAnimation 10s ease infinite; /* Slightly faster animation on hover */
+    animation-duration: 15s; /* Speed up slightly on hover */
 }
 
 /* Container and Sections */
 header, section, #capabilities, #experience {
-    margin-bottom: 35px;
-    padding: 30px; /* Increased padding */
-    background-color: rgba(38, 38, 38, 0.85); /* Semi-transparent dark background */
-    backdrop-filter: blur(10px); /* Frosted glass effect */
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 12px; /* Slightly more rounded */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-    border: 1px solid #384048; /* Adjusted border color */
+    margin-bottom: 40px;
+    padding: 35px;
+    background-color: rgba(22, 27, 34, 0.88); /* Darker, slightly more opaque */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    border: 1px solid #30363d;
 }
 
+/* --- Enhanced Header --- */
 header h1 {
-    margin-bottom: 8px;
-    color: #6cb6ff; /* Adjusted blue */
-    font-weight: 700;
-}
-
-header p {
-    color: #b0b8c0;
-    margin-bottom: 6px;
-}
-
-header a {
-    color: #6cb6ff;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-header a:hover {
-    color: #8ec4ff;
-    text-decoration: underline;
-}
-
-h2 {
-    color: #e6edf3; /* Brighter title color */
-    margin-bottom: 20px;
-    border-bottom: 2px solid #6cb6ff;
-    padding-bottom: 10px;
-    font-weight: 600;
-}
-
-ul {
-    list-style-position: inside;
-    padding-left: 0;
-}
-
-li {
     margin-bottom: 10px;
+    color: #79c0ff; /* Slightly lighter blue */
+    font-weight: 700;
+    text-shadow: 0 0 5px rgba(121, 192, 255, 0.3);
 }
 
-strong {
-    color: #e6edf3;
+/* --- Enhanced Section Titles --- */
+h2 {
+    color: #c9d1d9;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #79c0ff;
+    padding-bottom: 12px;
     font-weight: 600;
 }
 
-/* Layout */
-.container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 35px;
-}
-
-#capabilities {
-    flex: 1;
-    min-width: 280px;
-    /* background-color inherited */
-}
-
-#experience {
-    flex: 3;
-    min-width: 450px;
-    /* background-color inherited */
-}
-
-/* Capabilities Section - Enhanced Tags */
-.capability-group {
-    margin-bottom: 20px;
-}
-
-.capability-group h3 {
-    margin-bottom: 12px;
-    color: #9da5b0; /* Adjusted grey */
-    font-size: 1.05em;
-    font-weight: 600;
-}
-
+/* --- Enhanced Capabilities Tags --- */
 .cap-tag {
-    display: inline-block;
-    background-color: #3a3f47; /* Adjusted tag background */
-    color: #e6edf3;
-    padding: 7px 14px;
-    margin: 4px;
-    border-radius: 20px;
-    font-size: 0.9em;
-    cursor: pointer;
-    border: 1px solid #4a5058;
+    /* Previous styles retained, adding enhancements */
     transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.3s;
+    position: relative; /* Needed for pseudo-element */
+    overflow: hidden; /* Hide overflowing pseudo-element */
+}
+
+.cap-tag::before { /* Shiny hover effect */
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.4s ease;
+}
+
+.cap-tag:hover::before {
+    left: 150%;
 }
 
 .cap-tag:hover {
-    background-color: #6cb6ff;
-    color: #0d1117; /* Dark text on hover */
-    border-color: #6cb6ff;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(108, 182, 255, 0.3);
+    background-color: #79c0ff;
+    color: #0d1117;
+    border-color: #79c0ff;
+    transform: translateY(-3px) scale(1.03); /* More pronounced lift */
+    box-shadow: 0 6px 12px rgba(121, 192, 255, 0.4);
 }
 
 .cap-tag.active {
-    background-color: #6cb6ff;
+    background-color: #79c0ff;
     color: #0d1117;
-    border-color: #6cb6ff;
+    border-color: #79c0ff;
     font-weight: 600;
-    box-shadow: 0 2px 5px rgba(108, 182, 255, 0.2);
+    box-shadow: 0 3px 8px rgba(121, 192, 255, 0.3);
 }
 
-#reset-filter {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    margin-top: 20px;
-    background-color: #4a5058;
-    color: #e6edf3;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    font-weight: 600;
+/* Style for tags highlighted by project click */
+.cap-tag.highlighted-by-project {
+    background-color: #46c85a; /* Use project green for distinction */
+    color: #0d1117;
+    border-color: #46c85a;
+    box-shadow: 0 3px 8px rgba(70, 200, 90, 0.3);
 }
 
-#reset-filter:hover {
-    background-color: #5c6470;
-}
-
-/* Timeline Section - Enhanced Look */
+/* --- Enhanced Timeline --- */
 .timeline {
     position: relative;
-    padding-left: 35px;
+    padding-left: 40px;
 }
 
 .timeline::before {
-    content: '';
-    position: absolute;
-    left: 12px;
-    top: 5px;
-    bottom: 5px;
-    width: 3px;
-    background-color: #4a5058;
-    border-radius: 2px;
+    left: 15px;
+    width: 4px;
+    background-color: #30363d;
 }
 
 .timeline-item {
-    margin-bottom: 35px;
+    margin-bottom: 40px;
     position: relative;
-    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
     opacity: 1;
-    transform: translateX(0);
+    transition: opacity 0.5s ease-in-out, transform 0.3s ease-out;
+    transform-origin: left center;
 }
 
+/* Style for items filtered out (now hidden) */
 .timeline-item.filtered-out {
-    opacity: 0.25;
-    pointer-events: none; /* Prevent interaction with faded items */
+    opacity: 0;
+    height: 0;
+    margin-bottom: 0; /* Collapse margin */
+    overflow: hidden; /* Hide content */
+    pointer-events: none;
+    transform: scaleY(0);
+    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out, margin-bottom 0.4s ease-in-out, height 0.4s ease-in-out;
 }
 
+/* Highlight for items matching capability filter */
 .timeline-item.highlighted {
-     /* Highlight is mainly handled by opacity now, but keep subtle background */
-     background-color: rgba(108, 182, 255, 0.08);
-     border-left: 3px solid #6cb6ff;
-     padding-left: 15px;
-     margin-left: -18px; /* Adjust margin to compensate for padding */
-     border-radius: 5px;
+     opacity: 1;
+     /* Removed background/border highlight, relying on filtering */
+}
+
+/* Style for currently selected project */
+.timeline-item.selected-project .timeline-content {
+    box-shadow: 0 0 15px rgba(70, 200, 90, 0.5); /* Green glow */
+    border-color: #46c85a;
 }
 
 .timeline-dot {
-    position: absolute;
-    left: -8px;
-    top: 8px;
-    width: 18px;
-    height: 18px;
-    background-color: #6cb6ff; /* Primary blue */
-    border-radius: 50%;
-    border: 3px solid #262626;
-    z-index: 1;
-    transition: transform 0.3s ease;
+    left: -11px;
+    top: 10px;
+    width: 20px;
+    height: 20px;
+    border: 4px solid #22272e;
+    transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 .timeline-item:hover .timeline-dot {
-    transform: scale(1.2); /* Enlarge dot on hover */
+    transform: scale(1.3);
+}
+
+.timeline-item.selected-project .timeline-dot {
+    transform: scale(1.3);
+    background-color: #46c85a; /* Match selected border */
 }
 
 .timeline-dot.project-dot {
-    background-color: #46c85a; /* Brighter green */
+    background-color: #46c85a;
 }
 
 .timeline-content {
-    background-color: rgba(33, 33, 33, 0.9); /* Slightly more transparency */
-    backdrop-filter: blur(5px); /* Less blur for content */
-    -webkit-backdrop-filter: blur(5px);
-    padding: 20px;
-    border-radius: 8px;
-    border: 1px solid #384048;
-    transition: box-shadow 0.3s ease;
+    background-color: rgba(27, 31, 36, 0.9); /* GitHub dark content bg */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 25px;
+    border-radius: 10px;
+    border: 1px solid #30363d;
+    transition: box-shadow 0.4s ease, border-color 0.4s ease;
+    cursor: pointer; /* Indicate projects are clickable */
 }
 
 .timeline-item:not(.filtered-out) .timeline-content:hover {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    border-color: #58a6ff; /* Blue border on hover */
 }
 
-.timeline-content h3 {
-    margin-bottom: 6px;
-    font-size: 1.25em;
-    color: #e6edf3;
-    font-weight: 600;
-}
-
-.timeline-content .date {
-    display: block;
-    font-size: 0.9em;
-    color: #9da5b0;
-    margin-bottom: 12px;
-}
-
-.timeline-content p {
-    margin-bottom: 10px;
-    color: #b0b8c0;
-}
-
-.timeline-content ul {
-    margin-bottom: 0;
-    padding-left: 20px;
-    list-style-type: disc;
-}
-.timeline-content ul li {
-     color: #b0b8c0;
+/* --- Other elements --- */
+strong {
+    color: #c9d1d9;
 }
 
 /* Footer */
 footer {
-    text-align: center;
-    margin: 60px auto 40px auto; /* Center footer as well */
-    max-width: 1200px;
-    color: #9da5b0;
-    font-size: 0.9em;
-    padding-top: 20px;
-    border-top: 1px solid #384048;
+    max-width: 1280px;
+    margin: 70px auto 40px auto;
+    color: #8b949e;
+    border-top: 1px solid #30363d;
 }
 
-/* Responsive Adjustments */
+/* Responsive */
 @media (max-width: 768px) {
-    body {
-        padding: 0;
-    }
-    .main-content-wrapper {
-        margin: 20px auto; /* Adjust margin for mobile */
-        padding: 0 15px;
-    }
-    header, section, #capabilities, #experience {
-        padding: 20px;
-    }
-    .container {
-        flex-direction: column;
-        gap: 25px;
-    }
-    #capabilities, #experience {
-        flex: none;
-        width: 100%;
-        min-width: unset;
-    }
-    header h1 {
-        font-size: 1.8em;
-    }
-    h2 {
-        font-size: 1.4em;
-    }
-    .timeline {
-        padding-left: 25px;
-    }
-    .timeline::before {
-        left: 8px;
-    }
-    .timeline-dot {
-        left: -11px; /* Adjust dot position for mobile */
-        width: 16px;
-        height: 16px;
-        top: 6px;
-    }
-    .timeline-item.highlighted {
-         padding-left: 10px;
-         margin-left: -13px;
-    }
+    body { padding: 0; }
+    .main-content-wrapper { margin: 20px auto; padding: 0 15px; }
+    header, section, #capabilities, #experience { padding: 25px; border-radius: 10px; }
+    .timeline { padding-left: 30px; }
+    .timeline::before { left: 10px; }
+    .timeline-dot { left: -10px; width: 18px; height: 18px; top: 8px; border-width: 3px; }
+    .timeline-item.highlighted { margin-left: -13px; padding-left: 10px; }
 } 
