@@ -7,11 +7,10 @@
   Add your open source license, GitHub uses MIT license.
 -->
 
-# 吴克军 - 个人技能与项目经历展示 (GitHub Pages)
+# Patrick Wu - 个人技能与项目经历展示 (GitHub Pages)
 
 [![GitHub Pages](https://github.com/wkj932708981/skills-github-pages/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/wkj932708981/skills-github-pages/actions/workflows/pages/pages-build-deployment)
 
-这是一个基于 GitHub Pages 构建的个人交互式简历页面，旨在动态展示我的专业技能、能力框架以及相关的工作与项目经历。
 
 **在线访问**: [https://Patrixkw.github.io/skills-github-pages/](https://Patrixkw.github.io/skills-github-pages/)
 
@@ -27,32 +26,3 @@
 *   HTML5
 *   CSS3
 *   JavaScript (原生)
-
-## 如何部署 (GitHub Pages)
-
-1.  **Fork 或克隆此仓库**。
-2.  **将核心文件置于根目录**: 确保 `index.html`, `style.css`, 和 `script.js` 文件位于仓库的根目录下。
-3.  **推送到你的 GitHub 仓库**: 将你的修改提交并推送到 GitHub。
-4.  **启用 GitHub Pages**: 
-    *   进入你的仓库 -> Settings -> Pages。
-    *   在 "Build and deployment" 下，选择 "Deploy from a branch"。
-    *   选择你的主分支 (`main` or `master`) 和 `/(root)` 文件夹。
-    *   保存设置。
-5.  **访问**: 等待几分钟部署完成，即可通过 GitHub Pages 提供的 URL 访问。
-
-## 简历内容来源与版本
-
-*   **主要简历内容**: 网页内容主要基于 `cv.md` 文件，该文件经过多次迭代优化。
-*   **能力框架**: 能力框架的分类逻辑来源于 `capability_framework.md`。
-*   **领域版本简历**: 本仓库还包含针对不同 AI 岗位方向的精简版 Markdown 简历：
-    *   `cv_product_manager.md` (B 端 AI 产品经理)
-    *   `cv_product_operations.md` (AI 产品运营)
-    *   `cv_presales_consultant.md` (AI 产品售前顾问)
-    *   `cv_strategist.md` (AI 战略顾问)
-
-## 未来可能的改进
-
-*   点击项目经历弹出更详细的模态框（Modal）。
-*   添加更丰富的视觉元素或动画效果。
-*   集成更复杂的筛选或搜索功能。
-
