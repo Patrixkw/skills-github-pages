@@ -220,10 +220,10 @@ h2 {
     background: linear-gradient(145deg, #2a402a, #1a2a1a);
 }
 #capabilities .capability-group:nth-child(3) .cap-tag::after {
-     background: linear-gradient(60deg, #33ff57, #c94730, #cdb646); /* Green-Pink */
+     background: linear-gradient(60deg, #33ff57, #a9e9a1, #cdb646); /* Green-Pink */
 }
 #capabilities .capability-group:nth-child(3) .cap-tag::selection {
-    background: linear-gradient(60deg, #33ff57, #c94730, #cdb646);
+    background: linear-gradient(60deg, #33ff57, #a9f592, #cdb646);
 }   
 
 
@@ -405,11 +405,59 @@ footer {
 /* Responsive */
 @media (max-width: 992px) { /* Adjust breakpoint for wrap */
     .container {
-        flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        /* Keep flexbox for sticky positioning to work relative to container */
+        /* flex-wrap: wrap; */ /* Comment out to prevent wrapping */
+        align-items: flex-start; /* Align items to the top */
     }
-    #capabilities, #experience {
-        flex: 1 1 100%; /* Take full width when wrapped */
-        max-width: none;
+    #capabilities {
+        position: sticky; /* Make capabilities sticky */
+        top: 20px; /* Stick 20px from the top */
+        align-self: flex-start; /* Necessary for sticky in flex container */
+
+        /* Adjust size for narrower screens */
+        flex-grow: 0; /* Don't grow */
+        flex-shrink: 0; /* Don't shrink */
+        flex-basis: 260px; /* Fixed width when sticky */
+        min-width: 240px; /* Minimum width */
+        max-width: 280px; /* Maximum width */
+
+        /* Add height constraint and scrolling if content overflows */
+        max-height: calc(100vh - 40px); /* Max height = viewport height - top offset - bottom margin */
+        overflow-y: auto; /* Add vertical scroll if needed */
+
+        /* Ensure background/padding are still applied */
+        padding: 25px;
+        background-color: rgba(22, 27, 34, 0.9);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+        border: 1px solid #30363d;
+        margin-bottom: 20px; /* Add some bottom margin */
+    }
+
+    /* Reduce font size and padding for capability tags on narrow screens */
+    #capabilities .cap-tag {
+        font-size: 0.75em; /* Further reduce font size */
+        padding: 4px 8px; /* Further reduce padding */
+        margin: 2px; /* Slightly reduce margin */
+    }
+     #capabilities .capability-group h3 {
+        font-size: 0.95em; /* Slightly reduce group title size */
+        margin-bottom: 8px; /* Reduce margin */
+    }
+     #capabilities #reset-filter {
+        padding: 5px 12px; /* Reduce padding */
+        font-size: 0.8em; /* Reduce font size */
+        margin-top: 15px; /* Reduce top margin slightly */
+    }
+
+
+    #experience {
+        flex: 1; /* Allow experience section to take remaining space */
+        min-width: 0; /* Allow experience section to shrink */
+        max-width: none; /* Remove max-width constraint */
+        /* Padding etc. inherited or set below */
     }
 }
 
